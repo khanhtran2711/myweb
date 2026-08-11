@@ -1,11 +1,734 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f766e" />
+  <title>Lịch trình Tour Đà Nẵng 3N2Đ</title>
+  <style>
+    :root{
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --text:#172033;
+      --muted:#6b7280;
+      --primary:#0f766e;
+      --primary-2:#14b8a6;
+      --accent:#f59e0b;
+      --line:#dfe7ee;
+      --soft:#ecfdf5;
+      --danger:#ef4444;
+      --shadow:0 10px 30px rgba(15,23,42,.08);
+      --radius:22px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:linear-gradient(180deg,#ecfeff 0,#f8fafc 260px,var(--bg) 260px);
+      color:var(--text);
+      line-height:1.58;
+    }
+
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+
+    .wrap{
+      width:min(1120px, calc(100% - 28px));
+      margin:0 auto;
+    }
+
+    .hero{
+      padding:34px 0 26px;
+    }
+
+    .hero-card{
+      position:relative;
+      overflow:hidden;
+      border-radius:30px;
+      padding:26px 22px;
+      color:white;
+      background:
+        radial-gradient(circle at 90% 10%, rgba(255,255,255,.24), transparent 30%),
+        linear-gradient(135deg,#0f766e,#0891b2 70%,#2563eb);
+      box-shadow:0 24px 60px rgba(8,145,178,.22);
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 11px;
+      border:1px solid rgba(255,255,255,.28);
+      border-radius:999px;
+      background:rgba(255,255,255,.12);
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.02em;
+    }
+
+    h1{
+      margin:14px 0 8px;
+      font-size:clamp(30px,7vw,54px);
+      line-height:1.04;
+      letter-spacing:-.04em;
+    }
+
+    .hero p{
+      margin:0;
+      max-width:780px;
+      color:rgba(255,255,255,.88);
+      font-size:15px;
+    }
+
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+      margin-top:20px;
+    }
+
+    .summary-item{
+      padding:13px;
+      border-radius:16px;
+      background:rgba(255,255,255,.13);
+      border:1px solid rgba(255,255,255,.15);
+      backdrop-filter:blur(4px);
+    }
+    .summary-item b{display:block;font-size:16px}
+    .summary-item span{font-size:12px;color:rgba(255,255,255,.8)}
+
+    .quick-nav{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(246,248,251,.88);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(203,213,225,.7);
+    }
+
+    .quick-nav-inner{
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      scrollbar-width:none;
+      padding:10px 0;
+    }
+    .quick-nav-inner::-webkit-scrollbar{display:none}
+
+    .day-btn{
+      flex:0 0 auto;
+      border:0;
+      border-radius:999px;
+      padding:10px 15px;
+      background:#fff;
+      color:#334155;
+      box-shadow:0 2px 10px rgba(15,23,42,.05);
+      font-weight:800;
+      cursor:pointer;
+    }
+    .day-btn.active{
+      background:var(--primary);
+      color:#fff;
+    }
+
+    main{padding:22px 0 88px}
+
+    .section-title{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:14px;
+      margin:6px 0 14px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size:22px;
+      letter-spacing:-.02em;
+    }
+    .section-title p{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .day-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      margin:0 0 24px;
+      overflow:hidden;
+      scroll-margin-top:72px;
+      border:1px solid #eef2f7;
+    }
+
+    .day-head{
+      padding:20px 18px;
+      background:linear-gradient(135deg,#f0fdfa,#ecfeff);
+      border-bottom:1px solid #dff5f2;
+    }
+    .day-head-top{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .day-number{
+      min-width:62px;
+      text-align:center;
+      padding:7px 10px;
+      border-radius:999px;
+      background:var(--primary);
+      color:#fff;
+      font-weight:900;
+      font-size:13px;
+    }
+    .meal-badge{
+      padding:7px 10px;
+      border-radius:999px;
+      background:#fff7ed;
+      color:#c2410c;
+      font-weight:800;
+      font-size:12px;
+    }
+    .day-head h3{
+      margin:0;
+      font-size:21px;
+      line-height:1.25;
+      letter-spacing:-.02em;
+    }
+
+    .timeline{
+      padding:8px 18px 20px;
+    }
+
+    .stop{
+      position:relative;
+      display:grid;
+      grid-template-columns:40px 1fr;
+      gap:12px;
+      padding:16px 0 3px;
+    }
+    .stop:not(:last-child)::after{
+      content:"";
+      position:absolute;
+      left:19px;
+      top:48px;
+      bottom:-8px;
+      width:2px;
+      background:linear-gradient(var(--primary-2),#dbeafe);
+    }
+    .icon{
+      width:40px;height:40px;
+      display:grid;
+      place-items:center;
+      border-radius:13px;
+      background:var(--soft);
+      font-size:19px;
+      z-index:1;
+      border:1px solid #ccfbf1;
+    }
+    .stop-body{
+      min-width:0;
+      padding-bottom:14px;
+    }
+    .time{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-bottom:5px;
+      color:var(--primary);
+      font-size:12px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+    .stop h4{
+      margin:0 0 5px;
+      font-size:17px;
+    }
+    .stop p{
+      margin:0;
+      color:#475569;
+      font-size:14px;
+    }
+    .stop ul{
+      margin:8px 0 0;
+      padding-left:18px;
+      color:#475569;
+      font-size:14px;
+    }
+    .stop li+li{margin-top:4px}
+
+    .highlight{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:13px;
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      color:#9a3412;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .note{
+      margin:0 18px 18px;
+      padding:13px 14px;
+      border-radius:15px;
+      background:#f8fafc;
+      border:1px dashed #cbd5e1;
+      color:#475569;
+      font-size:13px;
+    }
+
+    .tips{
+      display:grid;
+      gap:12px;
+      margin-top:6px;
+    }
+    .tip{
+      background:#fff;
+      border-radius:18px;
+      padding:16px;
+      box-shadow:0 8px 24px rgba(15,23,42,.05);
+      border:1px solid #eef2f7;
+    }
+    .tip b{display:block;margin-bottom:4px}
+    .tip span{font-size:13px;color:var(--muted)}
+
+    .footer{
+      padding:22px 0 34px;
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .backtop{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      width:46px;height:46px;
+      border-radius:50%;
+      border:0;
+      background:var(--primary);
+      color:#fff;
+      box-shadow:0 10px 30px rgba(15,118,110,.3);
+      display:none;
+      place-items:center;
+      font-size:20px;
+      cursor:pointer;
+      z-index:60;
+    }
+    .backtop.show{display:grid}
+    .responsive-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+    @media(min-width:760px){
+      .hero{padding-top:46px}
+      .hero-card{padding:38px}
+      .summary-grid{grid-template-columns:repeat(4,1fr)}
+      .day-head{padding:24px 26px}
+      .timeline{padding:10px 26px 26px}
+      .stop{grid-template-columns:48px 1fr;gap:16px}
+      .icon{width:48px;height:48px;border-radius:15px}
+      .stop:not(:last-child)::after{left:23px;top:56px}
+      .stop p,.stop ul{font-size:15px}
+      .tips{grid-template-columns:repeat(3,1fr)}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+    }
+  </style>
 </head>
 <body>
-    
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-card">
+        <div class="eyebrow">🌴 Tour Đà Nẵng • 3 ngày 2 đêm</div>
+        <h1>Lịch trình khám phá Đà Nẵng – Hội An – Bà Nà Hills</h1>
+        <p>
+          Lịch trình được trình bày theo từng ngày, tập trung vào thời gian, điểm đến,
+          bữa ăn và hoạt động chính để dễ theo dõi trên điện thoại.
+        </p>
+
+        <div class="summary-grid">
+          <div class="summary-item"><b>3 ngày</b><span>Đà Nẵng & Hội An</span></div>
+          <div class="summary-item"><b>2 đêm</b><span>Nghỉ tại Đà Nẵng</span></div>
+          <div class="summary-item"><b>Ngày 2</b><span>Buffet Bà Nà Hills</span></div>
+          <div class="summary-item"><b>Ngày 3</b><span>City tour & tiễn bay</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="quick-nav" aria-label="Điều hướng theo ngày">
+    <div class="wrap quick-nav-inner">
+      <button class="day-btn active" data-target="day1">Ngày 1</button>
+      <button class="day-btn" data-target="day2">Ngày 2</button>
+      <button class="day-btn" data-target="day3">Ngày 3</button>
+      <button class="day-btn" data-target="tips">Lưu ý</button>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section class="section-title">
+      <div>
+        <h2>Chi tiết lịch trình</h2>
+        <p>Chạm vào các nút phía trên để chuyển nhanh đến từng ngày.</p>
+      </div>
+    </section>
+
+    <article class="day-card" id="day1">
+      <div class="day-head">
+        <div class="day-head-top">
+          <span class="day-number">NGÀY 1</span>
+          <span class="meal-badge">🍽 Ăn trưa + tối</span>
+        </div>
+        <h3>Đón sân bay – Sơn Trà – Ngũ Hành Sơn – Hội An – Thả hoa đăng</h3>
+      </div>
+
+      <div class="timeline">
+        <div class="stop">
+          <div class="icon">✈️</div>
+          <div class="stop-body">
+            <div class="time">10:00</div>
+            <h4>Tập trung tại sân bay Trà Nóc</h4>
+            <p>
+                <img class="responsive-img" src="./img/depart.jpg" alt="">
+            </p>
+            <p>Do sẽ ăn xế vào lúc 13:50-14:40 (dự kiến) nên <strong>ăn nhẹ trước khi đến sân bay.</strong></p>
+            <div class="highlight">⏰ Giờ check-in lên máy bay: 9:30-11:05</div>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">✈️</div>
+          <div class="stop-body">
+            <div class="time">Sáng – Trưa</div>
+            <h4>Đón tại sân bay Đà Nẵng</h4>
+            <p>Xe của công ty đón quý khách tại sân bay theo thời gian khách có mặt tại Đà Nẵng.</p>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🍱</div>
+          <div class="stop-body">
+            <div class="time">Buổi trưa</div>
+            <h4>Ăn trưa & nhận phòng khách sạn</h4>
+            <p>
+                <img src="img/lunch1.jpg" alt="" class="responsive-img">
+            </p>
+            <p>Quý khách dùng bữa trưa tại nhà hàng, sau đó về khách sạn nhận phòng và nghỉ ngơi tự do.</p>
+            <div class="highlight">⏰ Giờ check-in tiêu chuẩn của khách sạn: 14:00</div>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">⛰️</div>
+          <div class="stop-body">
+            <div class="time">Buổi chiều</div>
+            <h4>Bán Đảo Sơn Trà – Linh Ứng Tự</h4>
+            <p>Thưởng ngoạn toàn cảnh thành phố biển Đà Nẵng từ trên cao và viếng Linh Ứng Tự, nơi có tượng Phật Bà cao 67m.</p>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🪨</div>
+          <div class="stop-body">
+            <div class="time">Buổi chiều</div>
+            <h4>Danh thắng Ngũ Hành Sơn</h4>
+            <p>Xe và hướng dẫn viên đưa quý khách tham quan Non Nước – Ngũ Hành Sơn.</p>
+            <ul>
+              <li>Vọng Giang Đài.</li>
+              <li>Năm ngọn Kim – Mộc – Thủy – Hỏa – Thổ.</li>
+              <li>Động Huyền Không.</li>
+              <li>Chùa Linh Ứng I.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🍜</div>
+          <div class="stop-body">
+            <div class="time">18:00</div>
+            <h4>Ăn tối tại Hội An</h4>
+            <p>Thưởng thức các món đặc sản như cơm gà, cao lầu, bánh tráng xúc hến luộc, thịt nướng và đi loanh quanh có nhiều món khác.</p>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🏮</div>
+          <div class="stop-body">
+            <div class="time">Sau bữa tối</div>
+            <h4>Đi thuyền & thả đèn hoa đăng</h4>
+            <p>Trải nghiệm không gian lung linh của phố đèn lồng, thả hoa đăng cầu may mắn cho bản thân và gia đình.</p>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🌙</div>
+          <div class="stop-body">
+            <div class="time">Buổi tối</div>
+            <h4>Tự do khám phá Phố cổ Hội An</h4>
+            <ul>
+              <li>Chùa Cầu.</li>
+              <li>Nhà cổ.</li>
+              <li>Hội Quán Phúc Kiến.</li>
+              <li>Hội Quán Quảng Đông.</li>
+              <li>Chợ đêm Hội An.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🚌</div>
+          <div class="stop-body">
+            <div class="time">20:30</div>
+            <h4>Trở về khách sạn</h4>
+            <p>Đoàn trở về Đà Nẵng và nghỉ ngơi tự do tại khách sạn.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="day-card" id="day2">
+      <div class="day-head">
+        <div class="day-head-top">
+          <span class="day-number">NGÀY 2</span>
+          <span class="meal-badge">🍽 Sáng + buffet trưa</span>
+        </div>
+        <h3>Bà Nà Hills – Cầu Vàng – Fantasy Park</h3>
+      </div>
+
+      <div class="timeline">
+        <div class="stop">
+          <div class="icon">☕</div>
+          <div class="stop-body">
+            <div class="time">Buổi sáng</div>
+            <h4>Điểm tâm tại khách sạn</h4>
+            <p>Quý khách cần<strong> ăn lẹ làng, rốp rẻng </strong>để khởi hành đi Bà Nà Hills sớm!</p>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🚐</div>
+          <div class="stop-body">
+            <div class="time">07:00-07:30</div>
+            <h4>Khởi hành đi Bà Nà Hills</h4>
+            <p>Xe và hướng dẫn viên đón đoàn, bắt đầu hành trình “đường lên tiên cảnh”.</p>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🚡</div>
+          <div class="stop-body">
+            <div class="time">08:00-08:30</div>
+            <h4>Đến bà nà - Đi cáp treo & tham quan các điểm nổi bật</h4>
+            <ul>
+              <li>Chùa Linh Ứng.</li>
+              <li>Hầm Rượu Debay.</li>
+              <li>Vườn hoa Le Jardin D’Amour.</li>
+              <li>Trải nghiệm tàu hỏa leo núi.</li>
+              <li>Tượng Phật Thích Ca cao 27m.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🌉</div>
+          <div class="stop-body">
+            <div class="time">Check-in</div>
+            <h4>Cầu Vàng</h4>
+            <p>Tham quan và chụp hình tại một trong những điểm check-in nổi tiếng nhất của Đà Nẵng.</p>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🥗</div>
+          <div class="stop-body">
+            <div class="time">Buổi trưa</div>
+            <h4>Buffet trên đỉnh Bà Nà</h4>
+            <p>Thưởng thức bữa trưa buffet tại nhà hàng trên khu du lịch Bà Nà Hills.</p>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🏰</div>
+          <div class="stop-body">
+            <div class="time">Buổi chiều</div>
+            <h4>French Village – Đỉnh Núi Chúa – Lĩnh Chúa Từ</h4>
+            <p>Đoàn tự do tham quan, chụp hình và tận hưởng không khí trên đỉnh Bà Nà.</p>
+            <ul>
+              <li>Chinh phục Đỉnh Núi Chúa cao 1.487m.</li>
+              <li>Khám phá làng Pháp French Village.</li>
+              <li>Viếng đền Lĩnh Chúa Từ, cầu bình an và may mắn.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🎢</div>
+          <div class="stop-body">
+            <div class="time">Buổi chiều</div>
+            <h4>Fantasy Park</h4>
+            <p>Khám phá khu vui chơi trong nhà với nhiều trò chơi hấp dẫn.</p>
+            <ul>
+              <li>Tháp rơi tự do.</li>
+              <li>Công viên khủng long.</li>
+              <li>Đường đua rực lửa và nhiều trò chơi khác.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">⬇️</div>
+          <div class="stop-body">
+            <div class="time">15:30</div>
+            <h4>Tập trung xuống cáp treo</h4>
+            <p>Đoàn tập trung, đi cáp xuống Ga Suối Mơ và di chuyển về lại Đà Nẵng.</p>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🌃</div>
+          <div class="stop-body">
+            <div class="time">Buổi tối</div>
+            <h4>Tự do khám phá Đà Nẵng về đêm</h4>
+            <ul>
+              <li>Dùng bữa tối tại Quán hải sản Lộng Gió. <a href="https://maps.app.goo.gl/PgCcdyCj9V5UjfoA9">Nhấn để xem địa chỉ</a></li>
+              <li>Quý khách có thể dạo chợ Đêm Sơn Trà, thưởng thức đặc sản địa phương và ngắm thành phố về đêm. <a href="https://maps.app.goo.gl/M4ThGSC1AxjC7GSU9">Nhấn để xem địa chỉ</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="note">💡 Ngày 2 có nhiều thời gian đi bộ. Nên ưu tiên giày thể thao, áo khoác mỏng và sắp xếp hành lý gọn nhẹ.</div>
+    </article>
+
+    <article class="day-card" id="day3">
+      <div class="day-head">
+        <div class="day-head-top">
+          <span class="day-number">NGÀY 3</span>
+          <span class="meal-badge">🍽 Ăn sáng</span>
+        </div>
+        <h3>City Tour – Cầu Rồng – Cầu Tình Yêu – Shopping – Tiễn sân bay</h3>
+      </div>
+
+      <div class="timeline">
+        <div class="stop">
+          <div class="icon">🥐</div>
+          <div class="stop-body">
+            <div class="time">Buổi sáng</div>
+            <h4>Ăn sáng & chuẩn bị trả phòng</h4>
+            <p>Quý khách dùng điểm tâm tại khách sạn và chuẩn bị cho lịch trình city tour.</p>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🐉</div>
+          <div class="stop-body">
+            <div class="time">City tour</div>
+            <h4>Cầu Rồng</h4>
+            <p>Khám phá một trong những biểu tượng nổi bật của Đà Nẵng với thiết kế hình rồng độc đáo.</p>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">❤️</div>
+          <div class="stop-body">
+            <div class="time">City tour</div>
+            <h4>Cầu Tình Yêu</h4>
+            <p>Điểm dừng lãng mạn với đèn lồng trái tim và những “ổ khóa tình yêu”.</p>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🛍️</div>
+          <div class="stop-body">
+            <div class="time">Buổi trưa</div>
+            <h4>Shopping & kết thúc hành trình</h4>
+            <p>Dùng trưa tại Quán cô Hồng.  <a href="https://maps.app.goo.gl/M57rpf5WvGfzcL589">Nhấn vào để xem địa chỉ</a>.</p>
+            <p>Ghé quán bún bò mua dìa ăn nè :)</p>
+            <p>Ghé quán NCF để mua cafe dìa nè :) </p>
+            <p>Quý khách có thể mua sắm quà lưu niệm, đặc sản trước khi di chuyển ra sân bay.</p>
+          </div>
+        </div>
+
+        <div class="stop">
+          <div class="icon">🛫</div>
+          <div class="stop-body">
+            <div class="time">Kết thúc</div>
+            <h4>Tiễn sân bay Đà Nẵng</h4>
+            <p>Xe đưa quý khách ra sân bay làm thủ tục. Kết thúc chương trình và hẹn gặp lại.</p>
+            <p>
+                <img src="img/arrive.png" alt="" class="responsive-img">
+            </p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <section id="tips" style="scroll-margin-top:72px">
+      <div class="section-title">
+        <div>
+          <h2>Lưu ý nhanh trước chuyến đi</h2>
+          <p>Một vài thông tin giúp theo dõi tour thuận tiện hơn.</p>
+        </div>
+      </div>
+      <div class="tips">
+        <div class="tip">
+          <b>🧳 Hành lý</b>
+          <span>Ưu tiên đồ gọn nhẹ, giày dễ đi bộ và áo khoác mỏng cho Bà Nà Hills.</span>
+        </div>
+        <div class="tip">
+          <b>⏱ Theo dõi giờ tập trung</b>
+          <span>Nên có mặt trước giờ hẹn 10–15 phút để tránh ảnh hưởng lịch trình chung.</span>
+        </div>
+        <div class="tip">
+          <b>📱 Xem trên điện thoại</b>
+          <span>Dùng thanh Ngày 1–2–3 ở phía trên để chuyển nhanh đến phần cần xem.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">Lịch trình Tour Đà Nẵng 3N2Đ • Thiết kế tối ưu cho điện thoại</div>
+  </footer>
+
+  <button class="backtop" id="backTop" aria-label="Lên đầu trang">↑</button>
+
+  <script>
+    const buttons = [...document.querySelectorAll('.day-btn')];
+    const sections = ['day1','day2','day3','tips'].map(id => document.getElementById(id));
+    const backTop = document.getElementById('backTop');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.target);
+        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          buttons.forEach(b => b.classList.toggle('active', b.dataset.target === entry.target.id));
+        }
+      });
+    }, { rootMargin: '-25% 0px -60% 0px', threshold: 0.01 });
+
+    sections.forEach(s => s && observer.observe(s));
+
+    window.addEventListener('scroll', () => {
+      backTop.classList.toggle('show', window.scrollY > 500);
+    });
+
+    backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  </script>
 </body>
 </html>
